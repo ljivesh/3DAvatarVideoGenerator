@@ -227,7 +227,7 @@ function App() {
     ];
 
     let blob = null;
-    let fileExtension = 'mp4'; // Default to mp4
+    let fileExtension = 'webm'; // Default to mp4
 
     for (const option of options) {
       try {
