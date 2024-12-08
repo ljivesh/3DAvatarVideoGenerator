@@ -52,7 +52,7 @@ export function Model(props) {
     });
   };
 
-  const { animations } = useGLTF('/AmpereAnimations.glb');
+  const { animations } = useGLTF('/AmpereNewAnimations.glb');
   // console.log("animations", animations);
 
   const group = useRef();

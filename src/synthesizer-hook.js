@@ -24,7 +24,8 @@ function markdownToText(markdown) {
 
 export const useSynthesize = (
   ssml,
-  stopRecording
+  stopRecording,
+  setCurrentAnimation
 ) => {
   const audioElementRef = useRef(new Audio()); // Use ref to create and store the audio element
 
@@ -65,6 +66,13 @@ export const useSynthesize = (
     add: addFormatedSentence,
     remove: removeFormatedSentence,
     clear: clearFormatedSentence,
+  } = useQueue();
+
+  const {
+    first: firstBookmark,
+    add: addToBookmarkQueue,
+    remove: removeFromBookmarkQueue,
+    clear: clearBookmarkQueue,
   } = useQueue();
 
   // const showProductChat = useRecoilValue(showProductChatState);
@@ -108,7 +116,7 @@ export const useSynthesize = (
     
 
       const speechConfig = SpeechConfig.fromSubscription(
-        "your-secret-key",
+        "your-key",
         "your-region"
       );
 
@@ -133,6 +141,10 @@ export const useSynthesize = (
         addWord(e); 
       };
 
+      synthesizer.bookmarkReached = (s, e) => {
+        addToBookmarkQueue(e);
+      }
+
       return synthesizer;
     
   }, []);
@@ -149,6 +161,7 @@ export const useSynthesize = (
       // let numberOfCharacters = unFormatedSentence.length;
       // conversation.platformUsages.TextToSpeech += numberOfCharacters;
 
+      console.log(ssml.replace("__TEXT__", unFormatedSentence));
       speechSynthesizer.speakSsmlAsync(
         ssml.replace("__TEXT__", unFormatedSentence),
         (result) => {
@@ -245,6 +258,11 @@ export const useSynthesize = (
           return prev;
         });
         removeWord();
+      }
+
+      if (firstBookmark && audioElement.currentTime > firstBookmark.audioOffset / 10000000) {
+        setCurrentAnimation(firstBookmark.text);
+        removeFromBookmarkQueue();
       }
     };
 

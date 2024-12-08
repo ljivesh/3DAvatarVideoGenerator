@@ -18,7 +18,7 @@ function replaceVoice(voice) {
   
   <prosody rate="+10.00%">
   
-  __TEXT__
+    __TEXT__
   </prosody>
   </mstts:express-as>
   </voice>
@@ -27,7 +27,15 @@ function replaceVoice(voice) {
   return data;
 }
 
-const dialog = `Hey there! I’m Ampere AI, India’s first EV AI friend and your tech-savvy buddy who loves electric vibes and really hates traffic jams. I know every spec, every feature, and even the exact shade of green your wallet will love! Together, let’s electrify your ride and the planet—because saving the world is just... good salesmanship.`;
+const dialog = `  <bookmark mark='Wave' /> Hey there! I'm Ampere <bookmark mark='Idle'/> AI—India's first EV AI <bookmark mark='PointForward' /> friend and your tech-savvy buddy <bookmark mark='Idle' /> who loves electric vibes
+  <bookmark mark='Talk' /> and really hates traffic jams and pollution. <bookmark mark='Idle' />
+
+I know every spec, every feature and even the exact shade <bookmark mark='PointBackward' /> of green your wallet will love! <bookmark mark='Idle' />
+
+
+Ask me anything about electric vehicles. I'm here to make every gully electric!
+
+Just log on to ai.greaveselectricmobility.com. Let's say you ask me "which electric scooter to buy", here's my answer -`;
 
 const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -45,7 +53,7 @@ function App() {
     isAudioPlaying,
     addToQueue,
     audioBlob
-  } = useSynthesize(ssml, stopRecording);
+  } = useSynthesize(ssml, stopRecording, setCurrentAnimation);
   const canvasRef = useRef();
   const videoRef = useRef();
   const mediaRecorderRef = useRef();
@@ -59,18 +67,14 @@ function App() {
     await wait(4000);
     setCurrentAnimation('Idle');
     addToQueue({content:dialog});
-    await wait(3000);
-    setCurrentAnimation('Wave');
-    await wait(2000);
-    setCurrentAnimation('Idle');
-    await wait(15000);
+
   }
 
   const handleDataAvailable = (event) => {
-    console.log('Data available event:', event.data?.size || 0, 'bytes');
+    // console.log('Data available event:', event.data?.size || 0, 'bytes');
     if (event.data && event.data.size > 0) {
       recordedBlobsRef.current.push(event.data);
-      console.log('Total chunks recorded:', recordedBlobsRef.current.length);
+      // console.log('Total chunks recorded:', recordedBlobsRef.current.length);
     }
   };
 
