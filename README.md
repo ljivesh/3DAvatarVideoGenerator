@@ -1,8 +1,7 @@
-# React + Vite
+# 3D Avatar Video Generator
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Turns text into a video of a talking 3D avatar. Azure Speech synthesizes the voice from SSML, and its viseme events drive the avatar's lip-sync in react-three-fiber. The canvas and audio are recorded with MediaRecorder, and `record.js` runs the page headless with Puppeteer to export the video.
 
-Currently, two official plugins are available:
+**Stack:** React, Vite, react-three-fiber / drei, Azure Speech SDK, MediaRecorder, Puppeteer
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+**Run:** `npm install`, set `AZURE_SPEECH_KEY` and `AZURE_SPEECH_REGION`, then `npm run dev`. Use `node record.js` for a headless export.
